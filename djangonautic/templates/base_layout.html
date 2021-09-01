@@ -10,20 +10,28 @@
     </head>
 
     <body> 
-        <div class='wrapper'>
-            <h1><a href="{% url 'articles:articles_list' %}"><img src="{% static 'logo.png' %}" alt="djangonautic" /></a></h1>
+        <header class='wrapper'>
+            <h1><a href="{% url 'home' %}"><img src="{% static 'logo.png' %}" alt="djangonautic" /></a></h1>
             <nav>
                 <ul>
-                    <li>
-                        <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Logout</button>
-                        </form>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                        <li><a class='highlight' href="{% url 'articles:new_article' %}">New Article</a></li>
+                    {% else %}
+                        <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
+                        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
             </nav>
+        </header> 
+        <div class="wrapper">
             {% block content %}
             {% endblock %}
-        </div> 
+        </div>
     </body> 
 </html>
